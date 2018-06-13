@@ -28,6 +28,8 @@ private:
     QPoint m_oldPos;
     qint64 m_dest;
     qint64 m_total;
+
+    bool m_highlight;
 };
 
 #endif // WIDGET_H
