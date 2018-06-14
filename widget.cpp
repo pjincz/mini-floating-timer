@@ -19,6 +19,8 @@ Widget::Widget(qint64 total) :
 
     m_dest = QDateTime::currentSecsSinceEpoch() + m_total;
 
+    m_colorIdx = QDateTime::currentMSecsSinceEpoch() % 10;
+
     startTimer(500);
 }
 
@@ -37,6 +39,11 @@ void Widget::mouseReleaseEvent(QMouseEvent * e)
     if (e->button() == Qt::RightButton)
     {
         m_menu->popup(e->globalPos());
+    }
+    if (e->button() == Qt::MiddleButton)
+    {
+        m_colorIdx = (m_colorIdx + 1) % 10;
+        update();
     }
 }
 
@@ -65,6 +72,19 @@ void Widget::wheelEvent(QWheelEvent *e)
     setWindowOpacity(opacity);
 }
 
+const char * COLORLIST[] = {
+    "#1f77b4",
+    "#ff7f0e",
+    "#2ca02c",
+    "#d62728",
+    "#9467bd",
+    "#8c564b",
+    "#e377c2",
+    "#7f7f7f",
+    "#bcbd22",
+    "#17becf"
+};
+
 void Widget::paintEvent(QPaintEvent *)
 {
     QPainter pt(this);
@@ -76,7 +96,7 @@ void Widget::paintEvent(QPaintEvent *)
 
         QRect rc = rect();
         rc.setWidth(rc.width() * rate);
-        pt.fillRect(rc, Qt::green);
+        pt.fillRect(rc, QColor(COLORLIST[m_colorIdx]));
 
         QString remain = QString("%1:%2:%3")
                 .arg(rem / 3600, 2, 10, QLatin1Char('0'))

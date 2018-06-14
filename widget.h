@@ -32,6 +32,7 @@ private:
     qint64 m_total;
 
     bool m_highlight;
+    int m_colorIdx;
 
     QMenu * m_menu;
 };
