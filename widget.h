@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDateTime>
+#include <QMenu>
 
 namespace Ui {
 class Widget;
@@ -30,6 +31,8 @@ private:
     qint64 m_total;
 
     bool m_highlight;
+
+    QMenu * m_menu;
 };
 
 #endif // WIDGET_H

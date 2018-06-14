@@ -2,6 +2,7 @@
 #include "QMouseEvent"
 #include "QPainter"
 #include "QDateTime"
+#include "QApplication"
 
 Widget::Widget(qint64 total) :
     QWidget(0, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint),
@@ -9,6 +10,9 @@ Widget::Widget(qint64 total) :
     m_total(total),
     m_highlight(false)
 {
+    m_menu = new QMenu(this);
+    m_menu->addAction("&Quit", qApp, SLOT(quit()));
+
     setWindowOpacity(0.75);
     resize(120, this->fontInfo().pixelSize());
 
@@ -23,17 +27,21 @@ Widget::~Widget()
 
 void Widget::mousePressEvent(QMouseEvent * e)
 {
-    m_oldPos = e->globalPos();
+    if (e->buttons() & Qt::LeftButton)
+        m_oldPos = e->globalPos();
 }
 
-void Widget::mouseReleaseEvent(QMouseEvent*)
+void Widget::mouseReleaseEvent(QMouseEvent * e)
 {
-    m_oldPos.setX(-1);
+    if (e->button() == Qt::RightButton)
+    {
+        m_menu->popup(e->globalPos());
+    }
 }
 
 void Widget::mouseMoveEvent(QMouseEvent * e)
 {
-    if (m_oldPos.x() >= 0) {
+    if (e->buttons() & Qt::LeftButton) {
         QPoint delta = e->globalPos() - m_oldPos;
         QPoint pt = pos() + delta;
         if (pt.x() < 0)
@@ -41,8 +49,8 @@ void Widget::mouseMoveEvent(QMouseEvent * e)
         if (pt.y() < 1)
             pt.setY(1);
         move(pt);
-        m_oldPos = e->globalPos();
     }
+    m_oldPos = e->globalPos();
 }
 
 void Widget::paintEvent(QPaintEvent *)
