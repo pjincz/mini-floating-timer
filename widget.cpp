@@ -38,8 +38,8 @@ void Widget::mouseMoveEvent(QMouseEvent * e)
         QPoint pt = pos() + delta;
         if (pt.x() < 0)
             pt.setX(0);
-        if (pt.y() < 0)
-            pt.setY(0);
+        if (pt.y() < 1)
+            pt.setY(1);
         move(pt);
         m_oldPos = e->globalPos();
     }
