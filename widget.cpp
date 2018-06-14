@@ -3,6 +3,7 @@
 #include "QPainter"
 #include "QDateTime"
 #include "QApplication"
+#include "QStyle"
 
 Widget::Widget(qint64 total) :
     QWidget(0, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint),
@@ -11,9 +12,9 @@ Widget::Widget(qint64 total) :
     m_highlight(false)
 {
     m_menu = new QMenu(this);
-    m_menu->addAction("&Quit", qApp, SLOT(quit()));
+    m_menu->addAction(style()->standardIcon(QStyle::SP_TitleBarCloseButton), "&Quit", qApp, SLOT(quit()));
 
-    setWindowOpacity(0.75);
+    setWindowOpacity(0.8);
     resize(120, this->fontInfo().pixelSize());
 
     m_dest = QDateTime::currentSecsSinceEpoch() + m_total;
@@ -53,6 +54,17 @@ void Widget::mouseMoveEvent(QMouseEvent * e)
     m_oldPos = e->globalPos();
 }
 
+void Widget::wheelEvent(QWheelEvent *e)
+{
+    double opacity = windowOpacity();
+    opacity += e->angleDelta().y() / 1200.0;
+    if (opacity > 1)
+        opacity = 1;
+    if (opacity < 0.15)
+        opacity = 0.15;
+    setWindowOpacity(opacity);
+}
+
 void Widget::paintEvent(QPaintEvent *)
 {
     QPainter pt(this);
@@ -78,7 +90,6 @@ void Widget::paintEvent(QPaintEvent *)
 
         pt.drawText(rect(), Qt::AlignCenter, "00:00:00");
     }
-
 }
 
 void Widget::timerEvent(QTimerEvent *)
