@@ -8,6 +8,8 @@ InitSetting::InitSetting(QWidget *parent) :
     m_total(-1)
 {
     ui->setupUi(this);
+    ui->lineEdit->setFocus();
+    ui->lineEdit->setCursorPosition(0);
 }
 
 InitSetting::~InitSetting()

@@ -25,6 +25,9 @@
      </item>
      <item>
       <widget class="QLineEdit" name="lineEdit">
+       <property name="inputMask">
+        <string>99:99:99</string>
+       </property>
        <property name="text">
         <string>00:30:00</string>
        </property>

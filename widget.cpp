@@ -10,7 +10,7 @@ Widget::Widget(qint64 total) :
     m_highlight(false)
 {
     setWindowOpacity(0.75);
-    resize(120, 9);
+    resize(120, this->fontInfo().pixelSize());
 
     m_dest = QDateTime::currentSecsSinceEpoch() + m_total;
 
