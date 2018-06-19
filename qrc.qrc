@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/clock.wav</file>
+    </qresource>
+</RCC>

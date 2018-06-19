@@ -4,12 +4,15 @@
 #include "QDateTime"
 #include "QApplication"
 #include "QStyle"
+#include "QSoundEffect"
+#include "QFileInfo"
 
 Widget::Widget(qint64 total) :
     QWidget(0, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint),
     m_oldPos(-1, -1),
     m_total(total),
-    m_highlight(false)
+    m_highlight(false),
+    m_soundPlayed(false)
 {
     m_menu = new QMenu(this);
     m_menu->addAction(style()->standardIcon(QStyle::SP_TitleBarCloseButton), "&Quit", qApp, SLOT(quit()));
@@ -115,5 +118,18 @@ void Widget::paintEvent(QPaintEvent *)
 void Widget::timerEvent(QTimerEvent *)
 {
     m_highlight = !m_highlight;
+
+    int rem = m_dest -  QDateTime::currentSecsSinceEpoch();
+    if (rem <= 0 && !m_soundPlayed)
+    {
+        m_soundPlayed = true;
+
+        QSoundEffect * s = new QSoundEffect(this);
+        s->setSource(QUrl("qrc:/assets/clock.wav"));
+        s->setLoopCount(QSoundEffect::Infinite);
+        s->setVolume(0.5);
+        s->play();
+    }
+
     update();
 }

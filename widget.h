@@ -34,6 +34,8 @@ private:
     bool m_highlight;
     int m_colorIdx;
 
+    bool m_soundPlayed;
+
     QMenu * m_menu;
 };
 
