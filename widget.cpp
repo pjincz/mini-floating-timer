@@ -126,7 +126,7 @@ void Widget::timerEvent(QTimerEvent *)
 
         QSoundEffect * s = new QSoundEffect(this);
         s->setSource(QUrl("qrc:/assets/clock.wav"));
-        s->setLoopCount(QSoundEffect::Infinite);
+        s->setLoopCount(30);
         s->setVolume(0.5);
         s->play();
     }
