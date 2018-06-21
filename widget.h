@@ -26,10 +26,16 @@ protected:
     void paintEvent(QPaintEvent * e);
     void timerEvent(QTimerEvent *e);
 
+public slots:
+    void changeColor();
+    void togglePause();
+
 private:
-    QPoint m_oldPos;
-    qint64 m_dest;
     qint64 m_total;
+    qint64 m_start; // only valid in running status, or -1
+    qint64 m_lapse; // only valid in pause status, or -1
+
+    QPoint m_oldPos;
 
     bool m_highlight;
     int m_colorIdx;
