@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>assets/clock.wav</file>
+        <file>assets/github.png</file>
     </qresource>
 </RCC>

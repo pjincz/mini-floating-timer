@@ -6,6 +6,9 @@
 #include "QStyle"
 #include "QSoundEffect"
 #include "QFileInfo"
+#include "QDesktopServices"
+
+const char * GITHUB_LINK = "https://github.com/jinchizhong/mini-floating-timer";
 
 const char * COLORLIST[] = {
     "#1f77b4",
@@ -29,6 +32,9 @@ Widget::Widget(qint64 total) :
 {
     m_menu = new QMenu(this);
 
+    m_menu->addAction(QIcon(":/assets/github.png"), GITHUB_LINK, this, SLOT(showGithub()));
+    m_menu->addSeparator();
+
     m_menu->addAction(style()->standardIcon(QStyle::SP_MediaPause), "&Pause/Resume", this, SLOT(togglePause()));
     m_menu->addSeparator();
 
@@ -36,7 +42,7 @@ Widget::Widget(qint64 total) :
         QPixmap pmp(32, 32);
         pmp.fill(QColor(COLORLIST[i]));
         QIcon icon(pmp);
-        m_menu->addAction(icon, QString("Change color to &%1").arg(i), this, SLOT(changeColor()))->setData(i);
+        m_menu->addAction(icon, QString("Change color to #&%1").arg(i), this, SLOT(changeColor()))->setData(i);
     }
     m_menu->addSeparator();
     m_menu->addAction(style()->standardIcon(QStyle::SP_TitleBarCloseButton), "&Quit", qApp, SLOT(quit()));
@@ -164,4 +170,9 @@ void Widget::togglePause()
         m_lapse = -1;
     }
     update();
+}
+
+void Widget::showGithub()
+{
+    QDesktopServices::openUrl(QUrl(GITHUB_LINK));
 }

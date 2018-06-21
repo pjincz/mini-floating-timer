@@ -29,6 +29,7 @@ protected:
 public slots:
     void changeColor();
     void togglePause();
+    void showGithub();
 
 private:
     qint64 m_total;
