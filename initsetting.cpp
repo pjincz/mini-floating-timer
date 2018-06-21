@@ -5,7 +5,7 @@
 #include "QDesktopServices"
 #include "QUrl"
 
-extern const char * GITHUB_LINK;
+const char * HELP_LINK = "https://github.com/jinchizhong/mini-floating-timer/blob/master/README.md";
 
 InitSetting::InitSetting(QWidget *parent) :
     QDialog(parent),
@@ -53,6 +53,6 @@ void InitSetting::accept()
 void InitSetting::on_buttonBox_clicked(QAbstractButton *button)
 {
     if (ui->buttonBox->standardButton(button) == QDialogButtonBox::Help) {
-        QDesktopServices::openUrl(QUrl(GITHUB_LINK));
+        QDesktopServices::openUrl(QUrl(HELP_LINK));
     }
 }
