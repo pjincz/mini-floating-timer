@@ -1,5 +1,5 @@
 #include "widget.h"
-#include "initsetting.h"
+#include "setupDlg.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -9,12 +9,12 @@ int main(int argc, char *argv[])
     a.setOrganizationName("Chizhong Jin");
     a.setApplicationName("mini-floating-timer");
 
-    InitSetting w;
-    w.exec();
+    SetupDlg dlg;
+    dlg.exec();
 
-    if (w.m_total > 0) {
-        Widget timer(w.m_total);
-        timer.show();
+    if (dlg.m_total > 0) {
+        Widget * w = new Widget(dlg.m_total);
+        w->show();
         return a.exec();
     }
 

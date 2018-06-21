@@ -7,6 +7,7 @@
 #include "QSoundEffect"
 #include "QFileInfo"
 #include "QDesktopServices"
+#include "setupDlg.h"
 
 const char * GITHUB_LINK = "https://github.com/jinchizhong/mini-floating-timer";
 
@@ -26,9 +27,8 @@ const char * COLORLIST[] = {
 Widget::Widget(qint64 total) :
     QWidget(0, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint),
     m_oldPos(-1, -1),
-    m_total(total * 1000),
-    m_highlight(false),
-    m_soundPlayed(false)
+    m_total(total),
+    m_soundEffect(0)
 {
     m_menu = new QMenu(this);
 
@@ -36,13 +36,15 @@ Widget::Widget(qint64 total) :
     m_menu->addSeparator();
 
     m_menu->addAction(style()->standardIcon(QStyle::SP_MediaPause), "&Pause/Resume", this, SLOT(togglePause()));
+    m_menu->addAction("Restart", this, SLOT(restartTimer()));
+    m_menu->addAction("&Reset...", this, SLOT(resetTimer()));
     m_menu->addSeparator();
 
     for (int i = 0; i < sizeof(COLORLIST) / sizeof(*COLORLIST); ++i) {
         QPixmap pmp(32, 32);
         pmp.fill(QColor(COLORLIST[i]));
         QIcon icon(pmp);
-        m_menu->addAction(icon, QString("Change color to #&%1").arg(i), this, SLOT(changeColor()))->setData(i);
+        m_menu->addAction(icon, QString("Change color to #%1").arg(i), this, SLOT(changeColor()))->setData(i);
     }
     m_menu->addSeparator();
     m_menu->addAction(style()->standardIcon(QStyle::SP_TitleBarCloseButton), "&Quit", qApp, SLOT(quit()));
@@ -52,7 +54,7 @@ Widget::Widget(qint64 total) :
 
     m_start = QDateTime::currentMSecsSinceEpoch();
     m_lapse = -1;
-    m_colorIdx = m_start % 10;
+    m_color = QColor(COLORLIST[m_start % 10]);
 
     startTimer(100);
 }
@@ -115,7 +117,7 @@ void Widget::paintEvent(QPaintEvent *)
 
         QRect rc = rect();
         rc.setWidth(rc.width() * rate);
-        pt.fillRect(rc, QColor(COLORLIST[m_colorIdx]));
+        pt.fillRect(rc, m_color);
 
         QString remain = QString("%1:%2:%3.%4")
                 .arg(rem / 1000 / 3600, 2, 10, QLatin1Char('0'))
@@ -126,7 +128,8 @@ void Widget::paintEvent(QPaintEvent *)
     }
     else
     {
-        pt.fillRect(rect(), m_highlight ? Qt::red : Qt::white);
+        bool highlight = QDateTime::currentMSecsSinceEpoch() % 1000 > 500;
+        pt.fillRect(rect(), highlight ? Qt::red : Qt::white);
 
         pt.drawText(rect(), Qt::AlignCenter, "00:00:00");
     }
@@ -134,18 +137,15 @@ void Widget::paintEvent(QPaintEvent *)
 
 void Widget::timerEvent(QTimerEvent *)
 {
-    m_highlight = !m_highlight;
-
     int rem = m_lapse < 0 ? m_total - (QDateTime::currentMSecsSinceEpoch() - m_start) : m_total - m_lapse;
-    if (rem <= 0 && !m_soundPlayed)
+    if (rem <= 0 && !m_soundEffect)
     {
-        m_soundPlayed = true;
+        m_soundEffect = new QSoundEffect(this);
 
-        QSoundEffect * s = new QSoundEffect(this);
-        s->setSource(QUrl("qrc:/assets/clock.wav"));
-        s->setLoopCount(30);
-        s->setVolume(0.5);
-        s->play();
+        m_soundEffect->setSource(QUrl("qrc:/assets/clock.wav"));
+        m_soundEffect->setLoopCount(20);
+        m_soundEffect->setVolume(0.5);
+        m_soundEffect->play();
     }
 
     update();
@@ -154,7 +154,7 @@ void Widget::timerEvent(QTimerEvent *)
 void Widget::changeColor()
 {
     QAction * a = qobject_cast<QAction*>(sender());
-    this->m_colorIdx = a->data().toInt();
+    this->m_color = QColor(COLORLIST[a->data().toInt()]);
     update();
 }
 
@@ -175,4 +175,34 @@ void Widget::togglePause()
 void Widget::showGithub()
 {
     QDesktopServices::openUrl(QUrl(GITHUB_LINK));
+}
+
+void Widget::resetTimer()
+{
+    if (m_soundEffect)
+        m_soundEffect->stop();
+
+    SetupDlg dlg;
+    dlg.setTotal(m_total);
+
+    if (!dlg.exec())
+        return;
+
+    Widget * w = new Widget(dlg.m_total);
+    w->move(this->pos());
+    w->m_color = this->m_color;
+    w->show();
+    deleteLater();
+}
+
+void Widget::restartTimer()
+{
+    if (m_soundEffect)
+        m_soundEffect->stop();
+
+    Widget * w = new Widget(m_total);
+    w->move(this->pos());
+    w->m_color = this->m_color;
+    w->show();
+    deleteLater();
 }

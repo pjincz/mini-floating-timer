@@ -5,6 +5,8 @@
 #include <QDateTime>
 #include <QMenu>
 
+class QSoundEffect;
+
 namespace Ui {
 class Widget;
 }
@@ -30,6 +32,8 @@ public slots:
     void changeColor();
     void togglePause();
     void showGithub();
+    void resetTimer();
+    void restartTimer();
 
 private:
     qint64 m_total;
@@ -38,10 +42,9 @@ private:
 
     QPoint m_oldPos;
 
-    bool m_highlight;
-    int m_colorIdx;
+    QColor m_color;
 
-    bool m_soundPlayed;
+    QSoundEffect * m_soundEffect;
 
     QMenu * m_menu;
 };

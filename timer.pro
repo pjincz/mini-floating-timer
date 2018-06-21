@@ -26,14 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     widget.cpp \
-    initsetting.cpp
+    setupDlg.cpp
 
 HEADERS += \
     widget.h \
-    initsetting.h
+    setupDlg.h
 
 FORMS += \
-    initsetting.ui
+    setupDlg.ui
 
 win32:RC_ICONS += timer.ico
 

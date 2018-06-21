@@ -1,5 +1,5 @@
-#include "initsetting.h"
-#include "ui_initsetting.h"
+#include "setupDlg.h"
+#include "ui_SetupDlg.h"
 #include "QMessageBox"
 #include "QSettings"
 #include "QDesktopServices"
@@ -7,9 +7,9 @@
 
 const char * HELP_LINK = "https://github.com/jinchizhong/mini-floating-timer/blob/master/README.md";
 
-InitSetting::InitSetting(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::InitSetting),
+SetupDlg::SetupDlg(QWidget *parent) :
+    QDialog(parent, Qt::WindowStaysOnTopHint),
+    ui(new Ui::SetupDlg),
     m_total(-1)
 {
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
@@ -22,12 +22,12 @@ InitSetting::InitSetting(QWidget *parent) :
     ui->lineEdit->setCursorPosition(0);
 }
 
-InitSetting::~InitSetting()
+SetupDlg::~SetupDlg()
 {
     delete ui;
 }
 
-void InitSetting::accept()
+void SetupDlg::accept()
 {
     QString str = ui->lineEdit->text();
     QStringList sl = str.split(":");
@@ -41,6 +41,7 @@ void InitSetting::accept()
         QMessageBox::critical(this, "Bad time format", "Bad time format");
         return;
     }
+    m_total *= 1000;
 
     if (ui->updateDefault->checkState()) {
         QSettings s;
@@ -50,7 +51,16 @@ void InitSetting::accept()
     QDialog::accept();
 }
 
-void InitSetting::on_buttonBox_clicked(QAbstractButton *button)
+void SetupDlg::setTotal(qint64 total)
+{
+    QString x = QString("%1:%2:%3")
+            .arg(total / 1000 / 3600, 2, 10, QLatin1Char('0'))
+            .arg(total / 1000 % 3600 / 60, 2, 10, QLatin1Char('0'))
+            .arg(total / 1000 % 60, 2, 10, QLatin1Char('0'));
+    ui->lineEdit->setText(x);
+}
+
+void SetupDlg::on_buttonBox_clicked(QAbstractButton *button)
 {
     if (ui->buttonBox->standardButton(button) == QDialogButtonBox::Help) {
         QDesktopServices::openUrl(QUrl(HELP_LINK));
