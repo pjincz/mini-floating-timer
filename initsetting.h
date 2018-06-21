@@ -2,6 +2,7 @@
 #define INITSETTING_H
 
 #include <QDialog>
+#include <QAbstractButton>
 
 namespace Ui {
 class InitSetting;
@@ -18,6 +19,9 @@ public:
     void accept();
 
     qint64 m_total;
+
+private slots:
+    void on_buttonBox_clicked(QAbstractButton *button);
 
 private:
     Ui::InitSetting *ui;

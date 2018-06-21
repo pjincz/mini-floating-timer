@@ -1,13 +1,23 @@
 #include "initsetting.h"
 #include "ui_initsetting.h"
 #include "QMessageBox"
+#include "QSettings"
+#include "QDesktopServices"
+#include "QUrl"
+
+extern const char * GITHUB_LINK;
 
 InitSetting::InitSetting(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::InitSetting),
     m_total(-1)
 {
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     ui->setupUi(this);
+
+    QSettings s;
+    QString t = s.value("defaultTime", "00:30:00").toString();
+    ui->lineEdit->setText(t);
     ui->lineEdit->setFocus();
     ui->lineEdit->setCursorPosition(0);
 }
@@ -32,5 +42,17 @@ void InitSetting::accept()
         return;
     }
 
+    if (ui->updateDefault->checkState()) {
+        QSettings s;
+        s.setValue("defaultTime", ui->lineEdit->text());
+    }
+
     QDialog::accept();
+}
+
+void InitSetting::on_buttonBox_clicked(QAbstractButton *button)
+{
+    if (ui->buttonBox->standardButton(button) == QDialogButtonBox::Help) {
+        QDesktopServices::openUrl(QUrl(GITHUB_LINK));
+    }
 }

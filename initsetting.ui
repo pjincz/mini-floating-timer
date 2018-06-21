@@ -6,34 +6,41 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>69</height>
+    <width>329</width>
+    <height>115</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Setup</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Timer:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit">
-       <property name="inputMask">
-        <string>99:99:99</string>
-       </property>
-       <property name="text">
-        <string>00:30:00</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="inputMask">
+      <string>99:99:99</string>
+     </property>
+     <property name="text">
+      <string>00:30:00</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="updateDefault">
+     <property name="text">
+      <string>Update Default Time</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -41,7 +48,10 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok</set>
+     </property>
+     <property name="centerButtons">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
