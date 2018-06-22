@@ -2,6 +2,6 @@
     <qresource prefix="/">
         <file>assets/clock.wav</file>
         <file>assets/github.png</file>
-        <file>assets/meow.jpg</file>
+        <file>assets/meow.png</file>
     </qresource>
 </RCC>

@@ -112,7 +112,7 @@ void Widget::keyReleaseEvent(QKeyEvent *e)
     m_keySeq = (m_keySeq + e->text()).right(4);
     if (m_keySeq.toLower() == "meow") {
         QLabel * l = new QLabel();
-        l->setPixmap(QPixmap(":/assets/meow.jpg"));
+        l->setPixmap(QPixmap(":/assets/meow.png"));
         l->show();
     }
 }
