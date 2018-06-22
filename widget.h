@@ -25,6 +25,8 @@ protected:
     void mouseMoveEvent(QMouseEvent * e);
     void wheelEvent(QWheelEvent * e);
 
+    void keyReleaseEvent(QKeyEvent * e);
+
     void paintEvent(QPaintEvent * e);
     void timerEvent(QTimerEvent *e);
 
@@ -47,6 +49,8 @@ private:
     QSoundEffect * m_soundEffect;
 
     QMenu * m_menu;
+
+    QString m_keySeq;
 };
 
 #endif // WIDGET_H

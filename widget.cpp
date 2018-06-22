@@ -8,6 +8,7 @@
 #include "QFileInfo"
 #include "QDesktopServices"
 #include "setupDlg.h"
+#include "QLabel"
 
 const char * GITHUB_LINK = "https://github.com/jinchizhong/mini-floating-timer";
 
@@ -104,6 +105,16 @@ void Widget::wheelEvent(QWheelEvent *e)
     if (opacity < 0.15)
         opacity = 0.15;
     setWindowOpacity(opacity);
+}
+
+void Widget::keyReleaseEvent(QKeyEvent *e)
+{
+    m_keySeq = (m_keySeq + e->text()).right(4);
+    if (m_keySeq.toLower() == "meow") {
+        QLabel * l = new QLabel();
+        l->setPixmap(QPixmap(":/assets/meow.jpg"));
+        l->show();
+    }
 }
 
 void Widget::paintEvent(QPaintEvent *)
