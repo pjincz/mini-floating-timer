@@ -27,7 +27,7 @@ const char * COLORLIST[] = {
 };
 
 Widget::Widget(qint64 total) :
-    QWidget(0, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint),
+    QWidget(0, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool),
     m_oldPos(-1, -1),
     m_total(total),
     m_soundEffect(0)
