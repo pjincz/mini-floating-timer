@@ -9,6 +9,7 @@
 #include "QDesktopServices"
 #include "setupDlg.h"
 #include "QLabel"
+#include "QDesktopWidget"
 
 const char * GITHUB_LINK = "https://github.com/jinchizhong/mini-floating-timer";
 
@@ -68,6 +69,9 @@ void Widget::mousePressEvent(QMouseEvent * e)
 {
     if (e->buttons() & Qt::LeftButton)
         m_oldPos = e->globalPos();
+
+    if (m_soundEffect)
+        m_soundEffect->stop();
 }
 
 void Widget::mouseReleaseEvent(QMouseEvent * e)
@@ -85,13 +89,21 @@ void Widget::mouseReleaseEvent(QMouseEvent * e)
 void Widget::mouseMoveEvent(QMouseEvent * e)
 {
     if (e->buttons() & Qt::LeftButton) {
+        QRect screenRect = qApp->desktop()->screenGeometry(e->globalPos());
+
         QPoint delta = e->globalPos() - m_oldPos;
-        QPoint pt = pos() + delta;
-        if (pt.x() < 0)
-            pt.setX(0);
-        if (pt.y() < 1)
-            pt.setY(1);
-        move(pt);
+        QRect rc = QRect(pos() + delta, size());
+
+        if (rc.left() < screenRect.left() + 1)
+            rc.moveLeft(screenRect.left() + 1);
+        if (rc.top() < screenRect.top() + 1)
+            rc.moveTop(screenRect.top() + 1);
+        if (rc.right() > screenRect.right() - 1)
+            rc.moveRight(screenRect.right() - 1);
+        if (rc.bottom() > screenRect.bottom() - 1)
+            rc.moveBottom(screenRect.bottom() - 1);
+
+        move(rc.topLeft());
     }
     m_oldPos = e->globalPos();
 }
@@ -190,9 +202,6 @@ void Widget::showGithub()
 
 void Widget::resetTimer()
 {
-    if (m_soundEffect)
-        m_soundEffect->stop();
-
     SetupDlg dlg;
     dlg.setTotal(m_total);
 
