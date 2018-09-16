@@ -28,8 +28,8 @@ const char * COLORLIST[] = {
 
 Widget::Widget(qint64 total) :
     QWidget(0, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool),
-    m_oldPos(-1, -1),
     m_total(total),
+    m_oldPos(-1, -1),
     m_soundEffect(0)
 {
     m_menu = new QMenu(this);
@@ -42,7 +42,7 @@ Widget::Widget(qint64 total) :
     m_menu->addAction("&Reset...", this, SLOT(resetTimer()));
     m_menu->addSeparator();
 
-    for (int i = 0; i < sizeof(COLORLIST) / sizeof(*COLORLIST); ++i) {
+    for (int i = 0; i < (int)(sizeof(COLORLIST) / sizeof(*COLORLIST)); ++i) {
         QPixmap pmp(32, 32);
         pmp.fill(QColor(COLORLIST[i]));
         QIcon icon(pmp);

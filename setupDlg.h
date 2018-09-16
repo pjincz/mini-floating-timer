@@ -20,7 +20,7 @@ public:
 
     void setTotal(qint64 total);
 
-    qint64 m_total;
+    qint64 m_total = -1;
 
 private slots:
     void on_buttonBox_clicked(QAbstractButton *button);

@@ -1,5 +1,5 @@
 #include "setupDlg.h"
-#include "ui_SetupDlg.h"
+#include "ui_setupDlg.h"
 #include "QMessageBox"
 #include "QSettings"
 #include "QDesktopServices"
@@ -9,8 +9,7 @@ const char * HELP_LINK = "https://github.com/jinchizhong/mini-floating-timer/blo
 
 SetupDlg::SetupDlg(QWidget *parent) :
     QDialog(parent, Qt::WindowStaysOnTopHint),
-    ui(new Ui::SetupDlg),
-    m_total(-1)
+    ui(new Ui::SetupDlg)
 {
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     ui->setupUi(this);
