@@ -1,6 +1,8 @@
 #include "volumeaction.h"
 #include <QFormLayout>
 #include <QSlider>
+#include <QStyle>
+#include <QStyleOption>
 #include <math.h>
 
 const int SLIDER_MAX = 30;
@@ -34,6 +36,15 @@ QWidget *VolumeAction::createWidget(QWidget *parent)
 {
     QWidget * w = new QWidget(parent);
     QFormLayout * layout = new QFormLayout(w);
+
+    QStyleOption opt;
+    int hmargin = w->style()->pixelMetric(QStyle::PM_MenuHMargin, &opt, w);
+    int vmargin = w->style()->pixelMetric(QStyle::PM_MenuVMargin, &opt, w);
+    int icone = w->style()->pixelMetric(QStyle::PM_SmallIconSize, &opt, w);
+    int fw = w->style()->pixelMetric(QStyle::PM_MenuPanelWidth, &opt, w);
+    int spacing = w->style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing, &opt, w);
+    // following '4' is hardcored in qt,
+    layout->setContentsMargins(fw + hmargin + icone + 4 + spacing, vmargin + fw, hmargin + fw, vmargin + fw);
 
     QSlider * slider = new QSlider(Qt::Horizontal, w);
     slider->setRange(0, SLIDER_MAX);
