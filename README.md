@@ -3,6 +3,14 @@ A very tiny desktop floating timer, implement by Qt5.
 It's designed to float on the title bar, and won't effect title bar usage at all.  
 If you like this small tool, give me a star please.
 
+## Features
+
+* mini
+* floating
+* 10 built in colors
+* pause/resume/restart/reset
+* adjust notice volume
+
 ## Build
 
 If you are using Windows, you can just download from [releases](https://github.com/jinchizhong/mini-floating-timer/releases).
