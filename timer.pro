@@ -25,17 +25,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    widget.cpp \
-    setupDlg.cpp
+        widget.cpp \
+        setupDlg.cpp \
+        volumeaction.cpp \
+        global.cpp
 
 HEADERS += \
-    widget.h \
-    setupDlg.h
+        widget.h \
+        setupDlg.h \
+        volumeaction.h \
+        global.h
 
 FORMS += \
-    setupDlg.ui
+        setupDlg.ui
 
 win32:RC_ICONS += timer.ico
 
 RESOURCES += \
-    qrc.qrc
+        qrc.qrc

@@ -10,6 +10,8 @@
 #include "setupDlg.h"
 #include "QLabel"
 #include "QDesktopWidget"
+#include "volumeaction.h"
+#include "global.h"
 
 const char * GITHUB_LINK = "https://github.com/jinchizhong/mini-floating-timer";
 
@@ -27,7 +29,7 @@ const char * COLORLIST[] = {
 };
 
 Widget::Widget(qint64 total) :
-    QWidget(0, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool),
+    QWidget(0, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint),
     m_total(total),
     m_oldPos(-1, -1),
     m_soundEffect(0)
@@ -40,6 +42,9 @@ Widget::Widget(qint64 total) :
     m_menu->addAction(style()->standardIcon(QStyle::SP_MediaPause), "&Pause/Resume", this, SLOT(togglePause()));
     m_menu->addAction("Restart", this, SLOT(restartTimer()));
     m_menu->addAction("&Reset...", this, SLOT(resetTimer()));
+    m_menu->addSeparator();
+
+    m_menu->addAction(Global::instance()->volumeAction());
     m_menu->addSeparator();
 
     for (int i = 0; i < (int)(sizeof(COLORLIST) / sizeof(*COLORLIST)); ++i) {
@@ -167,7 +172,7 @@ void Widget::timerEvent(QTimerEvent *)
 
         m_soundEffect->setSource(QUrl("qrc:/assets/clock.wav"));
         m_soundEffect->setLoopCount(20);
-        m_soundEffect->setVolume(0.5);
+        m_soundEffect->setVolume(Global::instance()->volumeAction()->volume());
         m_soundEffect->play();
     }
 
